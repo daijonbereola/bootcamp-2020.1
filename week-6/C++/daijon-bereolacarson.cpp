@@ -38,6 +38,52 @@ void printTree(Node* root){
     printTree(root->left);
     printTree(root->right);
 }
+
+//1st problem
+bool checkLeaf(Node* root){
+    if(root->left == NULL && root->right == NULL){
+        return true;
+    }
+    else
+        return false;
+}
+
+void findMinimum(Node* root, int &min){
+    if(root == NULL)
+        return;
+    else{
+        if(root->data < min){
+            min = root->data;
+        } 
+    }
+    findMinimum(root->left, min);
+    findMinimum(root->right, min);
+}
+
+void maxDifference(Node* root, int max, int &finalMax){
+    int min = 99;
+    findMinimum(root, min);
+    max = root->data - min;
+
+    if(max > finalMax)
+        finalMax = max;
+    
+    if(!checkLeaf(root)){
+        maxDifference(root->left, -1, finalMax);
+        maxDifference(root->right, -1, finalMax);
+    }
+    return;
+}
+
 int main(){
+    Node* root = NULL;
+    newTree(root);
+    cout << "Tree: ";
+    printTree(root);
+    cout << "NULL" << endl;
+
+    int max_diff = -1;
+    maxDifference(root, -1, max_diff);
+    cout << "Max Difference: " << max_diff << endl;
     return 0;
 }
